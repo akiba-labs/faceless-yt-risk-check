@@ -3,6 +3,7 @@ import { FaqSection, type FaqItem } from "@/components/faq-section";
 import { QuizForm } from "@/components/quiz-form";
 import { SponsorSlot } from "@/components/sponsor-slot";
 import { RATE_LIMIT } from "@/lib/agent-api";
+import { API_PAUSED_NOTE, isGithubPages, pagesSiteUrl } from "@/lib/hosting";
 import { DISCLAIMER_SHORT, HONESTY, PUBLIC_URL, SITE_NAME } from "@/lib/site";
 
 const title = "Is a faceless YouTube channel still worth it in 2026? Free risk check (demonetization + expectations)";
@@ -12,12 +13,12 @@ const description =
 export const metadata: Metadata = {
   title: { absolute: `${title} · ${SITE_NAME}` },
   description,
-  alternates: { canonical: `${PUBLIC_URL}/` },
+  alternates: { canonical: isGithubPages ? "/" : `${PUBLIC_URL}/` },
   openGraph: {
     title,
     description,
     type: "website",
-    url: `${PUBLIC_URL}/`,
+    url: isGithubPages ? "/" : `${PUBLIC_URL}/`,
     images: [{ url: "/opengraph-image", width: 1200, height: 630 }],
   },
   twitter: { card: "summary_large_image", title, description, images: ["/opengraph-image"] },
@@ -27,7 +28,7 @@ const appJsonLd = {
   "@context": "https://schema.org",
   "@type": "WebApplication",
   name: SITE_NAME,
-  url: `${PUBLIC_URL}/`,
+  url: `${isGithubPages ? pagesSiteUrl(PUBLIC_URL) : PUBLIC_URL}/`,
   applicationCategory: "EducationalApplication",
   operatingSystem: "Any (web browser)",
   isAccessibleForFree: true,
@@ -94,11 +95,15 @@ const faq: FaqItem[] = [
   },
   {
     q: "Is there an API to score a faceless YouTube plan?",
-    a: `Yes, free and keyless, with CORS open. GET ${apiExample} or POST ${PUBLIC_URL}/api/score with the same fields as JSON. It returns HIGH / MED / LOW, signals, myths, a plain-text summary, and a disclaimer field. Fair use is about ${RATE_LIMIT} requests per minute per IP. OpenAPI: ${PUBLIC_URL}/openapi.json.`,
+    a: isGithubPages
+      ? API_PAUSED_NOTE
+      : `Yes, free and keyless, with CORS open. GET ${apiExample} or POST ${PUBLIC_URL}/api/score with the same fields as JSON. It returns HIGH / MED / LOW, signals, myths, a plain-text summary, and a disclaimer field. Fair use is about ${RATE_LIMIT} requests per minute per IP. OpenAPI: ${PUBLIC_URL}/openapi.json.`,
   },
   {
     q: "Can my AI assistant run this check through MCP?",
-    a: "Yes. The tool faceless_youtube_reality_check is on the free remote MCP server at https://free-agent-tools.vercel.app/mcp (streamable HTTP, no auth), together with the maker's other free tools. Add that URL to Claude, Cursor, ChatGPT, or another MCP client.",
+    a: isGithubPages
+      ? API_PAUSED_NOTE
+      : "Yes. The tool faceless_youtube_reality_check is on the free remote MCP server at https://free-agent-tools.vercel.app/mcp (streamable HTTP, no auth), together with the maker's other free tools. Add that URL to Claude, Cursor, ChatGPT, or another MCP client.",
   },
   {
     q: "Are VidIQ or SocialBlade numbers real AdSense income?",

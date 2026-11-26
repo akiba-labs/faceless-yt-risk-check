@@ -30,12 +30,22 @@ Open [http://localhost:3000](http://localhost:3000).
 
 ```bash
 npm run build
+npm run build:pages
 npm start
 ```
 
+## Where it runs
+
+- Full app and API (Vercel): https://faceless-yt-risk-check.vercel.app
+- Quiz (GitHub Pages): https://akiba-labs.github.io/faceless-yt-risk-check/
+
+`npm run build` is the Vercel app (quiz, JSON API, share pages). `npm run build:pages` writes a static `out/` for GitHub Pages and checks that internal links and assets resolve under `/faceless-yt-risk-check`. Server routes stay in the repo; the Pages script only moves them aside for that build.
+
+GitHub settings: **Settings → Pages → Build and deployment → Source: GitHub Actions**. Pushes to `main` deploy with `.github/workflows/pages.yml`.
+
 ## Vercel
 
-Import this GitHub repo into Vercel. Framework preset: **Next.js**. No database required.
+Import this GitHub repo into Vercel. Framework preset: **Next.js**. No database required. The Pages site does not replace this deployment.
 
 Optional:
 
